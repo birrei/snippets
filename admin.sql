@@ -87,3 +87,10 @@
     REFERENCES erprobt(ID) 
     ON DELETE RESTRICT ON UPDATE RESTRICT
     ;
+
+/* insert / update timestamp - Spalten hinzufügen */
+
+    ALTER TABLE sammlung ADD ts_insert datetime DEFAULT CURRENT_TIMESTAMP; 
+   
+    ALTER TABLE sammlung ADD ts_update datetime ON UPDATE CURRENT_TIMESTAMP; 
+   
