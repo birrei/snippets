@@ -1,3 +1,23 @@
+### Bereich ein/ausblenden 
+
+```
+<p><a onclick="hideFilter()" href="#">Filter ein/ausblenden</a></p>
+<script> 
+      function hideFilter() {
+        if (document.getElementById("filterpanel").hidden==false)
+        {
+          document.getElementById("filterpanel").hidden=true; 
+        } else 
+        {
+          document.getElementById("filterpanel").hidden=false;           
+        }
+
+      }
+</script>
+```
+
+
+
 ### Select-Box: ausgewählten Text ausgeben  
 
 ```
