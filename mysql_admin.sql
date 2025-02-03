@@ -63,8 +63,15 @@
 
 
     /***** spalte ergänzen ******/
+    
     ALTER TABLE `lookup_type` ADD `Bemerkung` VARCHAR(100) NULL ; 
+
     ALTER TABLE `erprobt` ADD `Jahr` YEAR; -- https://mariadb.com/kb/en/year-data-type/   
+
+    ALTER TABLE sammlung ADD ts_insert datetime DEFAULT CURRENT_TIMESTAMP; 
+   
+    ALTER TABLE sammlung ADD ts_update datetime ON UPDATE CURRENT_TIMESTAMP; 
+   
 
     /***** spalte datentyp ändern ******/
     ALTER TABLE schwierigkeitsgrad CHANGE `ID` `ID` INT NOT NULL ; 
@@ -88,9 +95,5 @@
     ON DELETE RESTRICT ON UPDATE RESTRICT
     ;
 
-/* insert / update timestamp - Spalten hinzufügen */
 
-    ALTER TABLE sammlung ADD ts_insert datetime DEFAULT CURRENT_TIMESTAMP; 
-   
-    ALTER TABLE sammlung ADD ts_update datetime ON UPDATE CURRENT_TIMESTAMP; 
-   
+
