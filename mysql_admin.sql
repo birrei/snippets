@@ -51,9 +51,9 @@
     ON DELETE RESTRICT ON UPDATE RESTRICT
     ;
 
+
     /***** constraint löschen -- MariaDB:  ******/
     ALTER TABLE satz DROP CONSTRAINT satz_ibfk_4; -- indizies, foreign-keys 
-
 
     /***** constraint löschen -- MySQL 5.7. ******/
     -- s.a. https://stackoverflow.com/questions/14122031/how-to-remove-constraints-from-my-mysql-table
@@ -95,5 +95,40 @@
     ON DELETE RESTRICT ON UPDATE RESTRICT
     ;
 
+/** Spalte mit unique key und FK soll nachträglich von NOT NULL auf NULL geändert werden   *****/
+
+    -- 1) gegeben : 
+        /*
+        CREATE TABLE `schueler_schwierigkeitsgrad` (
+        `ID` int(11) NOT NULL AUTO_INCREMENT,
+        `SchuelerID` int(11) NOT NULL,
+        `SchwierigkeitsgradID` int(10) unsigned NOT NULL,
+        `InstrumentID` int(11) NOT NULL,
+        PRIMARY KEY (`ID`),
+        UNIQUE KEY `uc_schueler_schwierigkeitsgrad` (`SchuelerID`,`SchwierigkeitsgradID`,`InstrumentID`),
+        KEY `SchwierigkeitsgradID` (`SchwierigkeitsgradID`),
+        KEY `InstrumentID` (`InstrumentID`),
+        CONSTRAINT `schueler_schwierigkeitsgrad_fkey_InstrumentID` FOREIGN KEY (`InstrumentID`) REFERENCES `instrument` (`ID`),
+        CONSTRAINT `schueler_schwierigkeitsgrad_fkey_SchuelerID` FOREIGN KEY (`SchuelerID`) REFERENCES `schueler` (`ID`),
+        CONSTRAINT `schueler_schwierigkeitsgrad_fkey_SchwierigkeitsgradID` FOREIGN KEY (`SchwierigkeitsgradID`) REFERENCES `schwierigkeitsgrad` (`ID`)
+        ) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci</td>
+        */
+
+
+
+    /* 2) Ziel: Spalte SchwierigkeitsgradID soll NULL erlauben */
+
+
+            -- fk containt löschen 
+        ALTER TABLE schueler_schwierigkeitsgrad 
+        DROP CONSTRAINT schueler_schwierigkeitsgrad_fkey_SchwierigkeitsgradID; 
+           -- MySQL 5.7: DROP FOReIGN KEY schueler_schwierigkeitsgrad_fkey_SchwierigkeitsgradID;
+
+        ALTER TABLE  schueler_schwierigkeitsgrad  CHANGE `SchwierigkeitsgradID` `SchwierigkeitsgradID` INT unsigned NULL;
+        -- OK (es ist also scheinbar nicht notwendig, noch den KEY / UNIQUE KEY anzupassen )
+
+        ALTER TABLE schueler_schwierigkeitsgrad 
+        ADD CONSTRAINT `schueler_schwierigkeitsgrad_fkey_SchwierigkeitsgradID` 
+        FOREIGN KEY (`SchwierigkeitsgradID`) REFERENCES `schwierigkeitsgrad` (`ID`)
 
 
